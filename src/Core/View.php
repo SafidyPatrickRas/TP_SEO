@@ -4,12 +4,14 @@ class View
 {
     public static function render(string $view, array $data = [], string $template = 'frontend'): void
     {
-        $viewPath = VIEWS_PATH . '/' . ltrim($view, '/');
+        $viewsPath = defined('VIEWS_PATH') ? VIEWS_PATH : dirname(__DIR__, 2) . '/views';
+
+        $viewPath = $viewsPath . '/' . ltrim($view, '/');
         if (!file_exists($viewPath)) {
             throw new Exception("Vue introuvable: {$view}");
         }
 
-        $templatePath = VIEWS_PATH . '/templates/' . $template . '.php';
+        $templatePath = $viewsPath . '/templates/' . $template . '.php';
         if (!file_exists($templatePath)) {
             throw new Exception("Template introuvable: {$template}");
         }
@@ -25,7 +27,8 @@ class View
 
     public static function partial(string $partial, array $data = []): void
     {
-        $partialPath = VIEWS_PATH . '/partials/' . ltrim($partial, '/');
+        $viewsPath = defined('VIEWS_PATH') ? VIEWS_PATH : dirname(__DIR__, 2) . '/views';
+        $partialPath = $viewsPath . '/partials/' . ltrim($partial, '/');
         if (!file_exists($partialPath)) {
             throw new Exception("Partial introuvable: {$partial}");
         }

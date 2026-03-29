@@ -1,37 +1,85 @@
 <style>
-.post {
-    background: white;
-    border-radius: 8px;
-    padding: 30px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-.post h1 { margin-bottom: 12px; }
-.meta { color: #666; margin-bottom: 20px; }
-.comments { margin-top: 30px; }
-.comment {
-    background: #fff;
-    border-left: 4px solid #667eea;
-    padding: 12px 16px;
-    margin-bottom: 10px;
-}
+    .article-wrap {
+        background: white;
+        border-radius: 12px;
+        padding: 26px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    .meta { color: #6b7280; margin: 10px 0 16px; }
+    .content { color: #1f2937; line-height: 1.75; }
+    .chips { margin: 16px 0; display: flex; gap: 8px; flex-wrap: wrap; }
+    .chip {
+        background: #eef2ff;
+        color: #3730a3;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.85rem;
+    }
+    .section-title { margin: 24px 0 12px; }
+    .related-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 10px;
+    }
+    .related-item {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 12px;
+        text-decoration: none;
+        color: #111827;
+    }
+    .comment {
+        background: #f9fafb;
+        border-left: 4px solid #2563eb;
+        padding: 12px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+    }
 </style>
 
-<article class="post">
+<article class="article-wrap">
     <h1><?= htmlspecialchars($post['title']) ?></h1>
-    <p class="meta">Auteur: <?= htmlspecialchars($post['author_name'] ?? 'Inconnu') ?></p>
-    <div><?= nl2br(htmlspecialchars($post['content'])) ?></div>
+    <p class="meta">Par <?= htmlspecialchars($post['author_name'] ?? 'Rédaction') ?> • <?= date('d/m/Y', strtotime($post['created_at'])) ?></p>
 
-    <section class="comments">
-        <h2>Commentaires</h2>
-        <?php if (!empty($comments)): ?>
-            <?php foreach ($comments as $comment): ?>
-                <div class="comment">
-                    <strong><?= htmlspecialchars($comment['name']) ?></strong><br>
-                    <?= nl2br(htmlspecialchars($comment['message'])) ?>
-                </div>
+    <?php if (!empty($categories)): ?>
+        <div class="chips">
+            <?php foreach ($categories as $category): ?>
+                <span class="chip">Catégorie: <?= htmlspecialchars($category['name']) ?></span>
             <?php endforeach; ?>
-        <?php else: ?>
-            <p>Aucun commentaire pour le moment.</p>
-        <?php endif; ?>
-    </section>
+        </div>
+    <?php endif; ?>
+
+    <?php if (!empty($tags)): ?>
+        <div class="chips">
+            <?php foreach ($tags as $tag): ?>
+                <span class="chip">#<?= htmlspecialchars($tag['name']) ?></span>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="content"><?= nl2br(htmlspecialchars($post['content'])) ?></div>
+
+    <h2 class="section-title">Commentaires</h2>
+    <?php if (!empty($comments)): ?>
+        <?php foreach ($comments as $comment): ?>
+            <div class="comment">
+                <strong><?= htmlspecialchars($comment['name']) ?></strong><br>
+                <?= nl2br(htmlspecialchars($comment['message'])) ?>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>Aucun commentaire pour le moment.</p>
+    <?php endif; ?>
+
+    <?php if (!empty($relatedPosts)): ?>
+        <h2 class="section-title">Articles associés</h2>
+        <div class="related-list">
+            <?php foreach ($relatedPosts as $relatedPost): ?>
+                <a class="related-item" href="/article/<?= urlencode($relatedPost['slug']) ?>">
+                    <?= htmlspecialchars($relatedPost['title']) ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 </article>

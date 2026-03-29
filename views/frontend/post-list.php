@@ -1,43 +1,120 @@
 <style>
-.hero {
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-}
-.post-item {
-    background: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-}
-.post-item h3 { margin-bottom: 10px; }
-.post-item p { color: #666; margin-bottom: 10px; }
-.btn {
-    display: inline-block;
-    padding: 8px 14px;
-    background-color: #667eea;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
+    .toolbar {
+        background: white;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        margin-bottom: 18px;
+    }
+    .toolbar h2 { margin-bottom: 8px; }
+    .search-form { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    .search-form input {
+        flex: 1 1 280px;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+    }
+    .search-form button, .search-form a {
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 8px;
+        background: #2563eb;
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .search-form a { background: #6b7280; }
+
+    .result-meta { color: #6b7280; margin-bottom: 12px; }
+
+    .post-item {
+        background: white;
+        border-radius: 10px;
+        padding: 18px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        margin-bottom: 14px;
+    }
+    .post-item h3 { margin-bottom: 8px; }
+    .post-item p { color: #374151; margin-bottom: 10px; }
+    .post-meta { color: #6b7280; font-size: 0.9rem; margin-bottom: 10px; }
+
+    .btn-link {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: #2563eb;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .pagination { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .pagination a, .pagination span {
+        padding: 8px 11px;
+        border-radius: 6px;
+        border: 1px solid #d1d5db;
+        text-decoration: none;
+        color: #111827;
+        background: white;
+    }
+    .pagination .current {
+        background: #2563eb;
+        color: white;
+        border-color: #2563eb;
+    }
 </style>
 
-<div class="hero">
-    <h2>Liste des articles</h2>
-    <p>Retrouvez ici tous les articles publiés.</p>
-</div>
+<section class="toolbar">
+    <h2>Articles sur la guerre en Iran</h2>
+    <p class="result-meta">Recherchez par mot-clé (titre ou contenu) pour filtrer les articles.</p>
+
+    <form class="search-form" method="get" action="/articles">
+        <input type="text" name="q" value="<?= htmlspecialchars($query ?? '') ?>" placeholder="Ex: sanctions, diplomatie, Téhéran...">
+        <button type="submit">Rechercher</button>
+        <?php if (!empty($query)): ?>
+            <a href="/articles">Réinitialiser</a>
+        <?php endif; ?>
+    </form>
+</section>
+
+<p class="result-meta">
+    <?= (int)($totalPosts ?? 0) ?> résultat(s)
+    <?php if (!empty($query)): ?>
+        pour “<?= htmlspecialchars($query) ?>”
+    <?php endif; ?>
+</p>
 
 <?php if (!empty($posts)): ?>
     <?php foreach ($posts as $post): ?>
         <article class="post-item">
             <h3><?= htmlspecialchars($post['title']) ?></h3>
-            <p><?= htmlspecialchars(substr($post['content'], 0, 180)) ?>...</p>
-            <a class="btn" href="/article/<?= urlencode($post['slug']) ?>">Lire</a>
+            <div class="post-meta">
+                Par <?= htmlspecialchars($post['author_name'] ?? 'Rédaction') ?> • <?= date('d/m/Y', strtotime($post['created_at'])) ?>
+            </div>
+            <p><?= htmlspecialchars(substr($post['content'], 0, 220)) ?>...</p>
+            <a class="btn-link" href="/article/<?= urlencode($post['slug']) ?>">Lire l’article</a>
         </article>
     <?php endforeach; ?>
+
+    <?php if (($totalPages ?? 1) > 1): ?>
+        <div class="pagination">
+            <?php for ($currentPage = 1; $currentPage <= $totalPages; $currentPage++): ?>
+                <?php
+                    $queryString = '?page=' . $currentPage;
+                    if (!empty($query)) {
+                        $queryString .= '&q=' . urlencode($query);
+                    }
+                ?>
+                <?php if ($currentPage === (int)$page): ?>
+                    <span class="current"><?= $currentPage ?></span>
+                <?php else: ?>
+                    <a href="/articles<?= $queryString ?>"><?= $currentPage ?></a>
+                <?php endif; ?>
+            <?php endfor; ?>
+        </div>
+    <?php endif; ?>
 <?php else: ?>
-    <p>Aucun article trouvé.</p>
+    <article class="post-item">
+        <h3>Aucun article trouvé</h3>
+        <p>Essayez un autre mot-clé ou revenez à la liste complète.</p>
+    </article>
 <?php endif; ?>

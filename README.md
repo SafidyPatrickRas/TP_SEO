@@ -107,7 +107,7 @@ TP_SEO/
 │       ├── posts/         # CRUD articles
 │       ├── categories/    # CRUD catégories
 │       ├── tags/          # CRUD tags
-│       └── post-categories/ # CRUD relation post_category
+│       ├── post-categories/ # CRUD relation post_category
 │       └── post-tags/     # CRUD relation post_tags
 │
 ├── config/                # ⚙️ Configuration

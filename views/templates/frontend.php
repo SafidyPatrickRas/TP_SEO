@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($title ?? 'TP_SEO - Iran Infos') ?></title>
+    <meta name="description" content="<?= htmlspecialchars($metaDescription ?? 'Actualités et analyses sur la guerre en Iran : suivi des événements, contexte géopolitique et dossiers éditoriaux.') ?>">
+    <meta name="robots" content="index,follow">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
