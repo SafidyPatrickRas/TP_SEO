@@ -7,14 +7,13 @@ TP_SEO/
 │
 ├── 📁 public/                      # ⭐ Racine publique (DocumentRoot Apache)
 │   ├── index.php                   # Point d'entrée principal
-│   ├── 404.php                     # Page d'erreur 404
 │   └── 🗂️ assets/                  # Lien symbolique vers /assets
 │
 ├── 📁 src/                         # Code applicatif (non accessible directement)
 │   ├── 📁 Core/
 │   │   ├── Database.php            # Connexion PostgreSQL
 │   │   ├── Router.php              # Routeur simple
-│   │   └── Request.php             # Gestion des requêtes
+│   │   └── View.php                # Rendu templates + partials
 │   │
 │   ├── 📁 Controller/
 │   │   ├── PostController.php       # Gestion des articles
@@ -47,15 +46,38 @@ TP_SEO/
 │   │   │   ├── edit.php            # Edition d'un article
 │   │   │   └── create.php          # Création d'un article
 │   │   ├── 📁 categories/
-│   │   │   └── manage.php          # Gestion des catégories
+│   │   │   ├── list.php            # Liste des catégories
+│   │   │   ├── create.php          # Création catégorie
+│   │   │   └── edit.php            # Edition catégorie
+│   │   ├── 📁 tags/
+│   │   │   ├── list.php            # Liste des tags
+│   │   │   ├── create.php          # Création tag
+│   │   │   └── edit.php            # Edition tag
+│   │   ├── 📁 post-categories/
+│   │   │   ├── list.php            # Liste des relations post/category
+│   │   │   ├── create.php          # Création relation
+│   │   │   └── edit.php            # Edition relation
+│   │   ├── 📁 post-tags/
+│   │   │   ├── list.php            # Liste des relations post/tag
+│   │   │   ├── create.php          # Création relation
+│   │   │   └── edit.php            # Edition relation
 │   │   └── 📁 users/
 │   │       └── manage.php          # Gestion des utilisateurs
 │   │
-│   ├── 📁 layout/
-│   │   ├── header.php              # En-tête commun
-│   │   ├── footer.php              # Pied de page commun
-│   │   ├── navbar.php              # Barre de navigation
-│   │   └── sidebar.php             # Barre latérale (admin)
+│   ├── 📁 templates/
+│   │   ├── frontend.php            # Layout FrontOffice
+│   │   ├── admin.php               # Layout BackOffice
+│   │   └── error.php               # Layout d'erreur
+│   │
+│   ├── 📁 partials/
+│   │   ├── 📁 frontend/
+│   │   │   ├── header.php          # Header FrontOffice
+│   │   │   ├── nav.php             # Navigation FrontOffice
+│   │   │   └── footer.php          # Footer FrontOffice
+│   │   └── 📁 admin/
+│   │       ├── header.php          # Header BackOffice
+│   │       ├── nav.php             # Navigation BackOffice
+│   │       └── footer.php          # Footer BackOffice
 │   │
 │   └── 📁 components/
 │       ├── card.php                # Composant carte
@@ -114,13 +136,9 @@ public/index.php (Point d'entrée)
     ↓
 src/Core/Router.php (Routeur)
     ↓
-src/Core/Request.php (Analyse requête)
+config/routes.php (Choix vue + template)
     ↓
-src/Middleware/* (Validations)
-    ↓
-src/Controller/* (Logique métier)
-    ↓
-src/Model/* (Access données BD)
+src/Core/View.php (Composition layout + partials)
     ↓
 views/* (Rendu HTML)
     ↓
@@ -177,6 +195,7 @@ define('APP_DEBUG', true);
 require_once ROOT_PATH . '/config/constants.php';
 require_once ROOT_PATH . '/src/Core/Database.php';
 require_once ROOT_PATH . '/src/Core/Router.php';
+require_once ROOT_PATH . '/src/Core/View.php';
 
 // Initialisation
 $db = new Database();
@@ -185,7 +204,11 @@ $router = new Router();
 // Routes
 require_once ROOT_PATH . '/config/routes.php';
 
-// Dispatch
+// Exemple de route avec template
+$router->get('/', function () use ($posts) {
+    View::render('frontend/home.php', ['posts' => $posts], 'frontend');
+});
+
 $router->dispatch($_GET['url'] ?? '/');
 ?>
 ```

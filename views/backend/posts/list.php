@@ -1,0 +1,28 @@
+<h2 style="margin-bottom: 20px;">Gestion des articles</h2>
+
+<?php if (!empty($posts)): ?>
+    <table style="width:100%;background:white;border-collapse:collapse;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+        <thead>
+            <tr style="background:#f1f3f5;">
+                <th style="padding:10px;text-align:left;">ID</th>
+                <th style="padding:10px;text-align:left;">Titre</th>
+                <th style="padding:10px;text-align:left;">Statut</th>
+                <th style="padding:10px;text-align:left;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($posts as $post): ?>
+                <tr>
+                    <td style="padding:10px;border-top:1px solid #eee;"><?= (int)$post['id'] ?></td>
+                    <td style="padding:10px;border-top:1px solid #eee;"><?= htmlspecialchars($post['title']) ?></td>
+                    <td style="padding:10px;border-top:1px solid #eee;"><?= htmlspecialchars($post['status']) ?></td>
+                    <td style="padding:10px;border-top:1px solid #eee;">
+                        <a href="/admin/articles/<?= (int)$post['id'] ?>/edit">Modifier</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php else: ?>
+    <p>Aucun article enregistré.</p>
+<?php endif; ?>

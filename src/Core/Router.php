@@ -44,8 +44,13 @@ class Router {
             }
 
             if (preg_match('#' . $route['pattern'] . '#', $url, $matches)) {
-                // Filtrer les clés numériques
-                $params = array_filter($matches, 'is_string', ARRAY_KEY_FILTER_USE_KEY);
+                // Filtrer les clés numériques (compatible versions PHP)
+                $params = [];
+                foreach ($matches as $key => $value) {
+                    if (is_string($key)) {
+                        $params[$key] = $value;
+                    }
+                }
                 
                 $handler = $route['handler'];
                 
