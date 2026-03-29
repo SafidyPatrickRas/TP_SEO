@@ -103,8 +103,11 @@ $router->get('/articles', function() {
     $totalPages = (int)ceil($totalPosts / $limit);
     
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     include VIEWS_PATH . '/frontend/post-list.php';
 =======
+=======
+>>>>>>> Stashed changes
     View::render('frontend/post-list.php', [
         'posts' => $posts,
         'query' => $query,

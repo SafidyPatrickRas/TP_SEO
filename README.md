@@ -249,6 +249,9 @@ Le template inclut automatiquement des partials (`header`, `nav`, `footer`) et i
 - Page liste d'articles avec recherche (`/articles?q=motcle`)
 - Page détail d'article avec catégories, tags et articles associés
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 ---
 
