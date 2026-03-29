@@ -22,6 +22,11 @@ if (file_exists($env_file)) {
 require_once ROOT_PATH . '/config/constants.php';
 require_once ROOT_PATH . '/src/Core/Database.php';
 require_once ROOT_PATH . '/src/Core/Router.php';
+require_once ROOT_PATH . '/src/Core/View.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Initialisation de la base de données
 try {
@@ -42,6 +47,9 @@ require_once ROOT_PATH . '/config/routes.php';
 // Récupération et dispatch de l'URL
 $url = $_GET['url'] ?? '/';
 $url = rtrim($url, '/');
+if ($url === '') {
+    $url = '/';
+}
 
 try {
     $router->dispatch($url, $_SERVER['REQUEST_METHOD']);
@@ -50,6 +58,6 @@ try {
         die("Erreur: " . $e->getMessage());
     }
     http_response_code(404);
-    include ROOT_PATH . '/views/404.php';
+    View::render('errors/404.php', ['title' => '404 - Page non trouvée'], 'error');
 }
 ?>

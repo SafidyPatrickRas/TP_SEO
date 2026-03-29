@@ -93,14 +93,22 @@ TP_SEO/
 ├── src/                   # 💻 Code applicatif
 │   └── Core/
 │       ├── Database.php   # Connexion PostgreSQL (PDO)
-│       └── Router.php     # Routeur simple
+│       ├── Router.php     # Routeur simple
+│       └── View.php       # Moteur de rendu (templates + partials)
 │
 ├── views/                 # 📄 Templates HTML/PHP
+│   ├── templates/         # Layouts globaux (frontend/admin/error)
+│   ├── partials/          # Morceaux réutilisables (header/nav/footer)
 │   ├── frontend/          # Pages publiques
 │   │   ├── home.php      # Accueil
 │   │   └── post-list.php # Liste articles
 │   └── backend/           # Pages admin
-│       └── dashboard.php  # Tableau de bord
+│       ├── dashboard.php  # Tableau de bord
+│       ├── posts/         # CRUD articles
+│       ├── categories/    # CRUD catégories
+│       ├── tags/          # CRUD tags
+│       └── post-categories/ # CRUD relation post_category
+│       └── post-tags/     # CRUD relation post_tags
 │
 ├── config/                # ⚙️ Configuration
 │   ├── .env              # Variables d'environnement
@@ -204,9 +212,17 @@ docker-compose up -d --build
 Les routes sont définies dans `config/routes.php`:
 
 ```php
-$router->get('/', function() { ... });
-$router->post('/admin/articles', function() { ... });
-$router->get('/article/:slug', function($slug) { ... });
+$router->get('/', function () use ($posts) {
+	View::render('frontend/home.php', ['posts' => $posts], 'frontend');
+});
+
+$router->get('/admin', function () use ($stats) {
+	View::render('backend/dashboard.php', $stats, 'admin');
+});
+
+$router->get('/admin/categories', function () use ($categories) {
+	View::render('backend/categories/list.php', ['categories' => $categories], 'admin');
+});
 ```
 
 ### Accès à la Base de Données
@@ -216,10 +232,26 @@ $posts = $db->fetchAll("SELECT * FROM posts");
 $post = $db->fetchOne("SELECT * FROM posts WHERE id = ?", [1]);
 ```
 
-### Inclusion de Templates
+### Système de Templates
 ```php
-include VIEWS_PATH . '/frontend/home.php';
+View::render('frontend/home.php', [
+	'posts' => $posts,
+	'title' => 'Accueil - TP_SEO'
+], 'frontend');
+
+View::render('backend/dashboard.php', [
+	'postsCount' => $postsCount,
+	'usersCount' => $usersCount,
+	'title' => 'Dashboard Admin - TP_SEO'
+], 'admin');
 ```
+
+Templates disponibles:
+- `frontend` → layout public
+- `admin` → layout backoffice
+- `error` → layout pages d'erreur
+
+Le template inclut automatiquement des partials (`header`, `nav`, `footer`) et injecte le contenu de la vue.
 
 ---
 
@@ -229,8 +261,13 @@ include VIEWS_PATH . '/frontend/home.php';
 - [x] Base de données PostgreSQL
 - [x] Point d'entrée PHP/Apache
 - [x] Routeur simple
+- [x] Système de templates multi-layout
 - [x] Page d'accueil frontend
 - [x] Dashboard admin
+- [x] CRUD catégories (admin)
+- [x] CRUD tags (admin)
+- [x] CRUD post_category (admin)
+- [x] CRUD post_tags (admin)
 - [ ] CRUD complet articles
 - [ ] Gestion utilisateurs
 - [ ] System d'authentification
