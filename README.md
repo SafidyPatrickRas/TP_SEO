@@ -100,7 +100,16 @@ TP_SEO/
 │   │   ├── home.php      # Accueil
 │   │   └── post-list.php # Liste articles
 │   └── backend/           # Pages admin
+<<<<<<< Updated upstream
 │       └── dashboard.php  # Tableau de bord
+=======
+│       ├── dashboard.php  # Tableau de bord
+│       ├── posts/         # CRUD articles
+│       ├── categories/    # CRUD catégories
+│       ├── tags/          # CRUD tags
+│       ├── post-categories/ # CRUD relation post_category
+│       └── post-tags/     # CRUD relation post_tags
+>>>>>>> Stashed changes
 │
 ├── config/                # ⚙️ Configuration
 │   ├── .env              # Variables d'environnement
@@ -221,6 +230,26 @@ $post = $db->fetchOne("SELECT * FROM posts WHERE id = ?", [1]);
 include VIEWS_PATH . '/frontend/home.php';
 ```
 
+<<<<<<< Updated upstream
+=======
+Templates disponibles:
+- `frontend` → layout public
+- `admin` → layout backoffice
+- `error` → layout pages d'erreur
+
+Le template inclut automatiquement des partials (`header`, `nav`, `footer`) et injecte le contenu de la vue.
+
+### SEO On-Page (FrontOffice)
+- Balise `<title>` dynamique par page (accueil, liste, détail)
+- Balise `<meta name="description">` dynamique par page
+- Pages optimisées sans dépendre du rewriting URL
+
+### FrontOffice livré
+- Page d'accueil professionnelle orientée guerre en Iran
+- Page liste d'articles avec recherche (`/articles?q=motcle`)
+- Page détail d'article avec catégories, tags et articles associés
+
+>>>>>>> Stashed changes
 ---
 
 ## 📋 Checklist Fonctionnalités

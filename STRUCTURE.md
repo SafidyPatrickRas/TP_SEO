@@ -127,6 +127,10 @@ views/* (Rendu HTML)
 Réponse HTTP + assets/ (CSS/JS/images)
 ```
 
+SEO On-page géré dans `views/templates/frontend.php` via:
+- `<title>` dynamique
+- `<meta name="description">` dynamique
+
 ---
 
 ## Convention de Nommage
