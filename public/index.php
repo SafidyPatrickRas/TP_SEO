@@ -24,10 +24,6 @@ require_once ROOT_PATH . '/src/Core/Database.php';
 require_once ROOT_PATH . '/src/Core/Router.php';
 require_once ROOT_PATH . '/src/Core/View.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 // Initialisation de la base de données
 try {
     $db = new Database();
@@ -49,6 +45,9 @@ $url = $_GET['url'] ?? '/';
 $url = rtrim($url, '/');
 if ($url === '') {
     $url = '/';
+}
+if ($url[0] !== '/') {
+    $url = '/' . $url;
 }
 
 try {

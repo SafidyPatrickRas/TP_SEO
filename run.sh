@@ -37,7 +37,7 @@ done
 
 echo ""
 echo "🐳 Démarrage des conteneurs Docker..."
-"${COMPOSE_CMD[@]}" -f "$SCRIPT_DIR/docker-compose.yml" up -d
+"${COMPOSE_CMD[@]}" -f "$SCRIPT_DIR/docker-compose.yml" up -d --build
 
 echo ""
 echo "⏳ Vérification de PostgreSQL..."

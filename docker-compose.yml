@@ -44,10 +44,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.php
-    command: >
-      sh -c "docker-php-ext-install pgsql pdo_pgsql &&
-             a2enmod rewrite &&
-             apache2-foreground"
+    command: apache2-foreground
 
 volumes:
   postgres_data:
