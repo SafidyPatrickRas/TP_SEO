@@ -38,11 +38,6 @@ class Router {
     }
 
     public function dispatch($url, $method = 'GET') {
-        if ($this->isAdminRoute($url) && !$this->isAdminAuthenticated()) {
-            header('Location: /login');
-            exit;
-        }
-
         foreach ($this->routes as $route) {
             if ($route['method'] !== $method) {
                 continue;
@@ -84,22 +79,6 @@ class Router {
 
     public function getRoutes() {
         return $this->routes;
-    }
-
-    private function isAdminRoute(string $url): bool {
-        return $url === '/admin' || strpos($url, '/admin/') === 0;
-    }
-
-    private function isAdminAuthenticated(): bool {
-        if (empty($_SESSION['auth_user'])) {
-            return false;
-        }
-
-        if (defined('ROLE_ADMIN')) {
-            return ($_SESSION['auth_user']['role'] ?? '') === ROLE_ADMIN;
-        }
-
-        return true;
     }
 }
 ?>
