@@ -48,7 +48,9 @@
 <body>
 <?php View::partial('admin/header.php', ['title' => $title ?? null]); ?>
 <div class="container">
-    <?php View::partial('admin/nav.php'); ?>
+    <?php if (!empty($_SESSION['auth_user'])) : ?>
+        <?php View::partial('admin/nav.php'); ?>
+    <?php endif; ?>
     <?= $content ?>
 </div>
 <?php View::partial('admin/footer.php'); ?>

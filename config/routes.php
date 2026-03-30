@@ -6,9 +6,14 @@
 
 // ============ ROUTES FRONTEND (PUBLIQUES) ============
 
+// Auth admin
+$router->get('/login', 'AdminAuthController@showLogin');
+$router->post('/login', 'AdminAuthController@login');
+$router->get('/logout', 'AdminAuthController@logout');
+
 // Page d'accueil
 $router->get('/', function() {
-    $db = $_SESSION['db'] ?? null;
+    $db = $GLOBALS['db'] ?? null;
     if (!$db) {
         die("Base de données non initialisée");
     }
@@ -44,7 +49,7 @@ $router->get('/', function() {
 
 // Liste des articles
 $router->get('/articles', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $page = (int)($_GET['page'] ?? 1);
     if ($page < 1) {
         $page = 1;
@@ -111,7 +116,7 @@ $router->get('/articles', function() {
 
 // Détail d'un article
 $router->get('/article/:slug', function($slug) {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $post = $db->fetchOne(
         "SELECT p.*, u.name as author_name FROM posts p 
          LEFT JOIN users u ON p.author_id = u.id 
@@ -170,7 +175,7 @@ $router->get('/article/:slug', function($slug) {
 
 // Dashboard admin
 $router->get('/admin', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $postsCount = $db->fetchOne("SELECT COUNT(*) as total FROM posts");
     $usersCount = $db->fetchOne("SELECT COUNT(*) as total FROM users");
     
@@ -183,7 +188,7 @@ $router->get('/admin', function() {
 
 // Liste des articles (admin)
 $router->get('/admin/articles', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $posts = $db->fetchAll("SELECT * FROM posts ORDER BY created_at DESC");
     View::render('backend/posts/list.php', [
         'posts' => $posts,
@@ -193,7 +198,7 @@ $router->get('/admin/articles', function() {
 
 // Créer un article
 $router->get('/admin/articles/create', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $categories = $db->fetchAll("SELECT * FROM categories ORDER BY name");
     View::render('backend/posts/create.php', [
         'categories' => $categories,
@@ -203,7 +208,7 @@ $router->get('/admin/articles/create', function() {
 
 // Éditer un article
 $router->get('/admin/articles/:id/edit', function($id) {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $post = $db->fetchOne("SELECT * FROM posts WHERE id = ?", [$id]);
     if (!$post) throw new Exception("Article non trouvé");
     
@@ -219,7 +224,7 @@ $router->get('/admin/articles/:id/edit', function($id) {
 
 // Liste des catégories
 $router->get('/admin/categories', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $categories = $db->fetchAll("SELECT * FROM categories ORDER BY created_at DESC");
 
     View::render('backend/categories/list.php', [
@@ -237,7 +242,7 @@ $router->get('/admin/categories/create', function() {
 
 // Enregistrement catégorie
 $router->post('/admin/categories', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $name = trim($_POST['name'] ?? '');
 
     if ($name === '') {
@@ -255,7 +260,7 @@ $router->post('/admin/categories', function() {
 
 // Formulaire édition catégorie
 $router->get('/admin/categories/:id/edit', function($id) {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $category = $db->fetchOne("SELECT * FROM categories WHERE id = ?", [$id]);
 
     if (!$category) {
@@ -270,7 +275,7 @@ $router->get('/admin/categories/:id/edit', function($id) {
 
 // Mise à jour catégorie
 $router->post('/admin/categories/:id/update', function($id) {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $name = trim($_POST['name'] ?? '');
 
     if ($name === '') {
@@ -288,7 +293,7 @@ $router->post('/admin/categories/:id/update', function($id) {
 
 // Suppression catégorie
 $router->post('/admin/categories/:id/delete', function($id) {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $db->query("DELETE FROM categories WHERE id = ?", [$id]);
 
     header("Location: /admin/categories");
@@ -299,7 +304,7 @@ $router->post('/admin/categories/:id/delete', function($id) {
 
 // Liste des tags
 $router->get('/admin/tags', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $tags = $db->fetchAll("SELECT * FROM tags ORDER BY id DESC");
 
     View::render('backend/tags/list.php', [
@@ -317,7 +322,7 @@ $router->get('/admin/tags/create', function() {
 
 // Enregistrement tag
 $router->post('/admin/tags', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $name = trim($_POST['name'] ?? '');
 
     if ($name === '') {
@@ -337,7 +342,7 @@ $router->post('/admin/tags', function() {
 
 // Formulaire édition tag
 $router->get('/admin/tags/:id/edit', function($id) {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $tag = $db->fetchOne("SELECT * FROM tags WHERE id = ?", [$id]);
 
     if (!$tag) {
@@ -352,7 +357,7 @@ $router->get('/admin/tags/:id/edit', function($id) {
 
 // Mise à jour tag
 $router->post('/admin/tags/:id/update', function($id) {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $name = trim($_POST['name'] ?? '');
 
     if ($name === '') {
@@ -372,7 +377,7 @@ $router->post('/admin/tags/:id/update', function($id) {
 
 // Suppression tag
 $router->post('/admin/tags/:id/delete', function($id) {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $db->query("DELETE FROM tags WHERE id = ?", [$id]);
 
     header("Location: /admin/tags");
@@ -383,7 +388,7 @@ $router->post('/admin/tags/:id/delete', function($id) {
 
 // Liste des relations post/category
 $router->get('/admin/post-categories', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $relations = $db->fetchAll(
         "SELECT pc.post_id, pc.category_id, p.title AS post_title, c.name AS category_name
          FROM post_category pc
@@ -400,7 +405,7 @@ $router->get('/admin/post-categories', function() {
 
 // Formulaire création relation
 $router->get('/admin/post-categories/create', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $posts = $db->fetchAll("SELECT id, title FROM posts ORDER BY id DESC");
     $categories = $db->fetchAll("SELECT id, name FROM categories ORDER BY name ASC");
 
@@ -413,7 +418,7 @@ $router->get('/admin/post-categories/create', function() {
 
 // Enregistrement relation
 $router->post('/admin/post-categories', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $postId = (int)($_POST['post_id'] ?? 0);
     $categoryId = (int)($_POST['category_id'] ?? 0);
 
@@ -441,7 +446,7 @@ $router->post('/admin/post-categories', function() {
 
 // Formulaire édition relation
 $router->get('/admin/post-categories/:postId/:categoryId/edit', function($postId, $categoryId) {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
 
     $relation = $db->fetchOne(
         "SELECT post_id, category_id FROM post_category WHERE post_id = ? AND category_id = ?",

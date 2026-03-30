@@ -10,4 +10,5 @@
     <a href="/admin/post-tags/create">➕ Lier Post/Tag</a>
     <a href="/admin/categories/create">➕ Créer Catégorie</a>
     <a href="/admin/articles/create">➕ Créer Article</a>
+    <a href="/logout">Se déconnecter</a>
 </nav>
