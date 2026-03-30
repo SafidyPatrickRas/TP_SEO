@@ -1,35 +1,43 @@
-<h2 style="margin-bottom: 20px;">Gestion des catégories</h2>
-
-<div style="margin-bottom: 16px;">
-    <a href="/admin/categories/create" style="padding:10px 14px;background:#667eea;color:white;text-decoration:none;border-radius:5px;">+ Nouvelle catégorie</a>
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Gestion des categories</h2>
+        <p class="page-meta">Organisez les categories visibles sur le site.</p>
+    </div>
+    <div class="page-actions">
+        <a href="/admin/categories/create" class="btn btn-primary">Nouvelle categorie</a>
+    </div>
 </div>
 
 <?php if (!empty($categories)): ?>
-    <table style="width:100%;background:white;border-collapse:collapse;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-        <thead>
-            <tr style="background:#f1f3f5;">
-                <th style="padding:10px;text-align:left;">ID</th>
-                <th style="padding:10px;text-align:left;">Nom</th>
-                <th style="padding:10px;text-align:left;">Créée le</th>
-                <th style="padding:10px;text-align:left;">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($categories as $category): ?>
+    <div class="card table-card">
+        <table class="admin-table">
+            <thead>
                 <tr>
-                    <td style="padding:10px;border-top:1px solid #eee;"><?= (int)$category['id'] ?></td>
-                    <td style="padding:10px;border-top:1px solid #eee;"><?= htmlspecialchars($category['name']) ?></td>
-                    <td style="padding:10px;border-top:1px solid #eee;"><?= htmlspecialchars(date('d/m/Y H:i', strtotime($category['created_at']))) ?></td>
-                    <td style="padding:10px;border-top:1px solid #eee;display:flex;gap:10px;align-items:center;">
-                        <a href="/admin/categories/<?= (int)$category['id'] ?>/edit">Modifier</a>
-                        <form method="post" action="/admin/categories/<?= (int)$category['id'] ?>/delete" onsubmit="return confirm('Supprimer cette catégorie ?');" style="display:inline;">
-                            <button type="submit" style="background:#dc3545;color:white;border:0;border-radius:4px;padding:6px 10px;cursor:pointer;">Supprimer</button>
-                        </form>
-                    </td>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Creee le</th>
+                    <th>Actions</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($categories as $category): ?>
+                    <tr>
+                        <td><?= (int)$category['id'] ?></td>
+                        <td><?= htmlspecialchars($category['name']) ?></td>
+                        <td><?= htmlspecialchars(date('d/m/Y H:i', strtotime($category['created_at']))) ?></td>
+                        <td>
+                            <div class="table-actions">
+                                <a class="btn btn-ghost" href="/admin/categories/<?= (int)$category['id'] ?>/edit">Modifier</a>
+                                <form method="post" action="/admin/categories/<?= (int)$category['id'] ?>/delete" onsubmit="return confirm('Supprimer cette categorie ?');">
+                                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 <?php else: ?>
-    <p>Aucune catégorie enregistrée.</p>
+    <p class="page-meta">Aucune categorie enregistree.</p>
 <?php endif; ?>

@@ -1,37 +1,45 @@
-<h2 style="margin-bottom: 20px;">Gestion des relations Post / Tag</h2>
-
-<div style="margin-bottom: 16px;">
-    <a href="/admin/post-tags/create" style="padding:10px 14px;background:#667eea;color:white;text-decoration:none;border-radius:5px;">+ Nouvelle relation</a>
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Relations post / tag</h2>
+        <p class="page-meta">Associez les articles aux tags.</p>
+    </div>
+    <div class="page-actions">
+        <a href="/admin/post-tags/create" class="btn btn-primary">Nouvelle relation</a>
+    </div>
 </div>
 
 <?php if (!empty($relations)): ?>
-    <table style="width:100%;background:white;border-collapse:collapse;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-        <thead>
-            <tr style="background:#f1f3f5;">
-                <th style="padding:10px;text-align:left;">Post ID</th>
-                <th style="padding:10px;text-align:left;">Article</th>
-                <th style="padding:10px;text-align:left;">Tag ID</th>
-                <th style="padding:10px;text-align:left;">Tag</th>
-                <th style="padding:10px;text-align:left;">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($relations as $relation): ?>
+    <div class="card table-card">
+        <table class="admin-table">
+            <thead>
                 <tr>
-                    <td style="padding:10px;border-top:1px solid #eee;"><?= (int)$relation['post_id'] ?></td>
-                    <td style="padding:10px;border-top:1px solid #eee;"><?= htmlspecialchars($relation['post_title']) ?></td>
-                    <td style="padding:10px;border-top:1px solid #eee;"><?= (int)$relation['tag_id'] ?></td>
-                    <td style="padding:10px;border-top:1px solid #eee;"><?= htmlspecialchars($relation['tag_name']) ?></td>
-                    <td style="padding:10px;border-top:1px solid #eee;display:flex;gap:10px;align-items:center;">
-                        <a href="/admin/post-tags/<?= (int)$relation['post_id'] ?>/<?= (int)$relation['tag_id'] ?>/edit">Modifier</a>
-                        <form method="post" action="/admin/post-tags/<?= (int)$relation['post_id'] ?>/<?= (int)$relation['tag_id'] ?>/delete" onsubmit="return confirm('Supprimer cette relation ?');" style="display:inline;">
-                            <button type="submit" style="background:#dc3545;color:white;border:0;border-radius:4px;padding:6px 10px;cursor:pointer;">Supprimer</button>
-                        </form>
-                    </td>
+                    <th>Post ID</th>
+                    <th>Article</th>
+                    <th>Tag ID</th>
+                    <th>Tag</th>
+                    <th>Actions</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($relations as $relation): ?>
+                    <tr>
+                        <td><?= (int)$relation['post_id'] ?></td>
+                        <td><?= htmlspecialchars($relation['post_title']) ?></td>
+                        <td><?= (int)$relation['tag_id'] ?></td>
+                        <td><?= htmlspecialchars($relation['tag_name']) ?></td>
+                        <td>
+                            <div class="table-actions">
+                                <a class="btn btn-ghost" href="/admin/post-tags/<?= (int)$relation['post_id'] ?>/<?= (int)$relation['tag_id'] ?>/edit">Modifier</a>
+                                <form method="post" action="/admin/post-tags/<?= (int)$relation['post_id'] ?>/<?= (int)$relation['tag_id'] ?>/delete" onsubmit="return confirm('Supprimer cette relation ?');">
+                                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 <?php else: ?>
-    <p>Aucune relation post/tag enregistrée.</p>
+    <p class="page-meta">Aucune relation post/tag enregistree.</p>
 <?php endif; ?>

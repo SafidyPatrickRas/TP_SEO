@@ -1,40 +1,44 @@
 <style>
     .article-wrap {
-        background: white;
-        border-radius: 12px;
-        padding: 26px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        padding: 28px;
+        border-radius: 20px;
+        border: 1px solid rgba(56, 40, 51, 0.08);
+        box-shadow: var(--shadow);
+        background: var(--panel);
     }
-    .meta { color: #6b7280; margin: 10px 0 16px; }
-    .content { color: #1f2937; line-height: 1.75; }
+    .meta { color: rgba(56, 40, 51, 0.65); margin: 12px 0 18px; }
+    .content { color: rgba(56, 40, 51, 0.9); line-height: 1.8; }
     .chips { margin: 16px 0; display: flex; gap: 8px; flex-wrap: wrap; }
     .chip {
-        background: #eef2ff;
-        color: #3730a3;
-        padding: 6px 10px;
+        background: rgba(255, 217, 193, 0.8);
+        color: var(--ink);
+        padding: 6px 12px;
         border-radius: 999px;
+        border: 1px solid rgba(171, 109, 88, 0.3);
         font-size: 0.85rem;
+        font-weight: 600;
     }
-    .section-title { margin: 24px 0 12px; }
+    .section-title { margin: 26px 0 12px; }
     .related-list {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 10px;
+        gap: 12px;
     }
     .related-item {
-        background: #f9fafb;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        padding: 12px;
+        background: rgba(64, 98, 128, 0.08);
+        border: 1px solid rgba(64, 98, 128, 0.2);
+        border-radius: 14px;
+        padding: 14px;
         text-decoration: none;
-        color: #111827;
+        color: var(--ink);
+        font-weight: 600;
     }
     .comment {
-        background: #f9fafb;
-        border-left: 4px solid #2563eb;
+        background: rgba(247, 194, 187, 0.35);
+        border-left: 4px solid var(--rust);
         padding: 12px;
         margin-bottom: 10px;
-        border-radius: 4px;
+        border-radius: 10px;
     }
 </style>
 

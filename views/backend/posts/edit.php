@@ -1,16 +1,28 @@
-<h2 style="margin-bottom: 20px;">Modifier l'article</h2>
-<form method="post" action="/admin/articles/<?= (int)$post['id'] ?>" style="background:white;padding:20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-    <label>Titre</label><br>
-    <input type="text" name="title" value="<?= htmlspecialchars($post['title']) ?>" required style="width:100%;padding:10px;margin:8px 0 14px;"><br>
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Modifier l'article</h2>
+        <p class="page-meta">Mettez a jour le contenu et le statut.</p>
+    </div>
+</div>
 
-    <label>Contenu</label><br>
-    <textarea name="content" rows="8" required style="width:100%;padding:10px;margin:8px 0 14px;"><?= htmlspecialchars($post['content']) ?></textarea><br>
+<form method="post" action="/admin/articles/<?= (int)$post['id'] ?>" class="card form-card">
+    <div class="form-field">
+        <label for="title">Titre</label>
+        <input id="title" type="text" name="title" value="<?= htmlspecialchars($post['title']) ?>" required class="form-input">
+    </div>
 
-    <label>Statut</label><br>
-    <select name="status" style="width:100%;padding:10px;margin:8px 0 14px;">
-        <option value="draft" <?= $post['status'] === 'draft' ? 'selected' : '' ?>>Brouillon</option>
-        <option value="published" <?= $post['status'] === 'published' ? 'selected' : '' ?>>Publié</option>
-    </select><br>
+    <div class="form-field">
+        <label for="content">Contenu</label>
+        <textarea id="content" name="content" rows="8" required class="form-textarea"><?= htmlspecialchars($post['content']) ?></textarea>
+    </div>
 
-    <button type="submit" style="padding:10px 16px;background:#667eea;color:white;border:0;border-radius:5px;">Mettre à jour</button>
+    <div class="form-field">
+        <label for="status">Statut</label>
+        <select id="status" name="status" class="form-select">
+            <option value="draft" <?= $post['status'] === 'draft' ? 'selected' : '' ?>>Brouillon</option>
+            <option value="published" <?= $post['status'] === 'published' ? 'selected' : '' ?>>Publie</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Mettre a jour</button>
 </form>
