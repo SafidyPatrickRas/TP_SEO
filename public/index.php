@@ -9,6 +9,10 @@ define('ROOT_PATH', dirname(__DIR__));
 define('APP_DEBUG', true);
 define('APP_ENV', 'dev');
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Chargement des variables d'environnement
 $env_file = ROOT_PATH . '/config/.env';
 if (file_exists($env_file)) {
@@ -23,11 +27,13 @@ require_once ROOT_PATH . '/config/constants.php';
 require_once ROOT_PATH . '/src/Core/Database.php';
 require_once ROOT_PATH . '/src/Core/Router.php';
 require_once ROOT_PATH . '/src/Core/View.php';
+require_once ROOT_PATH . '/src/Model/User.php';
+require_once ROOT_PATH . '/src/Controller/AdminAuthController.php';
 
 // Initialisation de la base de données
 try {
     $db = new Database();
-    $_SESSION['db'] = $db;
+    $GLOBALS['db'] = $db;
 } catch (Exception $e) {
     if (APP_DEBUG) {
         die("Erreur BD: " . $e->getMessage());
