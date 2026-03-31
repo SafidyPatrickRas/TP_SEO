@@ -17,10 +17,6 @@ RUN echo '<VirtualHost *:80>\n\
         Options Indexes FollowSymLinks\n\
         AllowOverride All\n\
         Require all granted\n\
-        RewriteEngine On\n\
-        RewriteCond %{REQUEST_FILENAME} !-f\n\
-        RewriteCond %{REQUEST_FILENAME} !-d\n\
-        RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]\n\
     </Directory>\n\
     <FilesMatch "\\.php$">\n\
         SetHandler application/x-httpd-php\n\
