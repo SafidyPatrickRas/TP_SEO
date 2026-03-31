@@ -470,7 +470,7 @@ $router->get('/admin/post-categories/:postId/:categoryId/edit', function($postId
 
 // Mise à jour relation
 $router->post('/admin/post-categories/update', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
 
     $oldPostId = (int)($_POST['old_post_id'] ?? 0);
     $oldCategoryId = (int)($_POST['old_category_id'] ?? 0);
@@ -505,7 +505,7 @@ $router->post('/admin/post-categories/update', function() {
 
 // Suppression relation
 $router->post('/admin/post-categories/:postId/:categoryId/delete', function($postId, $categoryId) {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $db->query(
         "DELETE FROM post_category WHERE post_id = ? AND category_id = ?",
         [$postId, $categoryId]
@@ -519,7 +519,7 @@ $router->post('/admin/post-categories/:postId/:categoryId/delete', function($pos
 
 // Liste des relations post/tag
 $router->get('/admin/post-tags', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $relations = $db->fetchAll(
         "SELECT pt.post_id, pt.tag_id, p.title AS post_title, t.name AS tag_name
          FROM post_tags pt
@@ -536,7 +536,7 @@ $router->get('/admin/post-tags', function() {
 
 // Formulaire création relation post/tag
 $router->get('/admin/post-tags/create', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $posts = $db->fetchAll("SELECT id, title FROM posts ORDER BY id DESC");
     $tags = $db->fetchAll("SELECT id, name FROM tags ORDER BY name ASC");
 
@@ -549,7 +549,7 @@ $router->get('/admin/post-tags/create', function() {
 
 // Enregistrement relation post/tag
 $router->post('/admin/post-tags', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $postId = (int)($_POST['post_id'] ?? 0);
     $tagId = (int)($_POST['tag_id'] ?? 0);
 
@@ -577,7 +577,7 @@ $router->post('/admin/post-tags', function() {
 
 // Formulaire édition relation post/tag
 $router->get('/admin/post-tags/:postId/:tagId/edit', function($postId, $tagId) {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
 
     $relation = $db->fetchOne(
         "SELECT post_id, tag_id FROM post_tags WHERE post_id = ? AND tag_id = ?",
@@ -601,7 +601,7 @@ $router->get('/admin/post-tags/:postId/:tagId/edit', function($postId, $tagId) {
 
 // Mise à jour relation post/tag
 $router->post('/admin/post-tags/update', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
 
     $oldPostId = (int)($_POST['old_post_id'] ?? 0);
     $oldTagId = (int)($_POST['old_tag_id'] ?? 0);
@@ -636,7 +636,7 @@ $router->post('/admin/post-tags/update', function() {
 
 // Suppression relation post/tag
 $router->post('/admin/post-tags/:postId/:tagId/delete', function($postId, $tagId) {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     $db->query(
         "DELETE FROM post_tags WHERE post_id = ? AND tag_id = ?",
         [$postId, $tagId]
@@ -648,7 +648,7 @@ $router->post('/admin/post-tags/:postId/:tagId/delete', function($postId, $tagId
 
 // Traitement formulaire créer article
 $router->post('/admin/articles', function() {
-    $db = $_SESSION['db'];
+    $db = $GLOBALS['db'];
     
     $title = $_POST['title'] ?? '';
     $slug = str_replace(' ', '-', strtolower($title));
