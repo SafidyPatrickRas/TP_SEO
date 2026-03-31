@@ -1,3 +1,3 @@
 <footer>
-    <p>&copy; 2026 TP_SEO Admin | <a href="/" style="color: #667eea;">Retour au site</a></p>
+    <p>&copy; 2026 TP_SEO Admin | <a class="btn btn-ghost" href="/">Retour au site</a></p>
 </footer>

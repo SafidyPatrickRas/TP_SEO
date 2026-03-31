@@ -1,22 +1,31 @@
-<h2 style="margin-bottom: 20px;">Créer une relation Post / Tag</h2>
+<div class="page-header">
+    <div>
+        <h2 class="page-title">Creer une relation post / tag</h2>
+        <p class="page-meta">Associez un article a un tag.</p>
+    </div>
+</div>
 
-<form method="post" action="/admin/post-tags" style="background:white;padding:20px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);max-width:700px;">
-    <label>Article</label><br>
-    <select name="post_id" required style="width:100%;padding:10px;margin:8px 0 14px;">
-        <option value="">-- Choisir un article --</option>
-        <?php foreach ($posts as $post): ?>
-            <option value="<?= (int)$post['id'] ?>">#<?= (int)$post['id'] ?> - <?= htmlspecialchars($post['title']) ?></option>
-        <?php endforeach; ?>
-    </select><br>
+<form method="post" action="/admin/post-tags" class="card form-card">
+    <div class="form-field">
+        <label for="post_id">Article</label>
+        <select id="post_id" name="post_id" required class="form-select">
+            <option value="">-- Choisir un article --</option>
+            <?php foreach ($posts as $post): ?>
+                <option value="<?= (int)$post['id'] ?>">#<?= (int)$post['id'] ?> - <?= htmlspecialchars($post['title']) ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
 
-    <label>Tag</label><br>
-    <select name="tag_id" required style="width:100%;padding:10px;margin:8px 0 14px;">
-        <option value="">-- Choisir un tag --</option>
-        <?php foreach ($tags as $tag): ?>
-            <option value="<?= (int)$tag['id'] ?>">#<?= (int)$tag['id'] ?> - <?= htmlspecialchars($tag['name']) ?></option>
-        <?php endforeach; ?>
-    </select><br>
+    <div class="form-field">
+        <label for="tag_id">Tag</label>
+        <select id="tag_id" name="tag_id" required class="form-select">
+            <option value="">-- Choisir un tag --</option>
+            <?php foreach ($tags as $tag): ?>
+                <option value="<?= (int)$tag['id'] ?>">#<?= (int)$tag['id'] ?> - <?= htmlspecialchars($tag['name']) ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
 
-    <button type="submit" style="padding:10px 16px;background:#667eea;color:white;border:0;border-radius:5px;">Enregistrer</button>
-    <a href="/admin/post-tags" style="margin-left:10px;">Annuler</a>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    <a href="/admin/post-tags" class="btn btn-ghost">Annuler</a>
 </form>

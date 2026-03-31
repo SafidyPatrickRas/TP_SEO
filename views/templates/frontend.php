@@ -7,48 +7,141 @@
     <meta name="description" content="<?= htmlspecialchars($metaDescription ?? 'Actualités et analyses sur la guerre en Iran : suivi des événements, contexte géopolitique et dossiers éditoriaux.') ?>">
     <meta name="robots" content="index,follow">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Space+Grotesk:wght@400;500;600&display=swap');
+
+        :root {
+            --accent: #2890c6;
+            --ink: #382833;
+            --navy: #406280;
+            --slate: #5f6693;
+            --rust: #ab6d58;
+            --rose: #f7c2bb;
+            --peach: #ffd9c1;
+            --panel: #ffffff;
+            --shadow: 0 12px 30px rgba(56, 40, 51, 0.12);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             line-height: 1.6;
-            color: #333;
-            background-color: #f8f9fa;
+            color: var(--ink);
+            background-color: #fdf9f6;
+            background-image:
+                radial-gradient(circle at 12% 10%, rgba(247, 194, 187, 0.45), transparent 55%),
+                radial-gradient(circle at 88% 12%, rgba(255, 217, 193, 0.5), transparent 50%),
+                linear-gradient(120deg, rgba(255, 217, 193, 0.5), rgba(255, 255, 255, 0.7) 48%, rgba(247, 194, 187, 0.5));
+            min-height: 100vh;
         }
+        h1, h2, h3, h4 { font-family: 'Fraunces', serif; letter-spacing: 0.2px; }
+        a { color: inherit; }
+
         .container {
-            max-width: 1200px;
+            max-width: 1160px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 22px;
         }
+
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            color: #fffaf7;
+            padding: 36px 0 40px;
+            background: linear-gradient(135deg, var(--navy), var(--slate));
+            box-shadow: var(--shadow);
         }
-        header h1 { font-size: 2em; margin-bottom: 5px; }
-        header p { opacity: 0.9; }
+        header::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -18px;
+            width: 100%;
+            height: 18px;
+            background: linear-gradient(90deg, var(--accent), var(--rust));
+        }
+        .brand {
+            display: grid;
+            gap: 6px;
+        }
+        .brand h1 { font-size: clamp(1.8rem, 2.8vw, 2.5rem); }
+        .brand p { opacity: 0.92; max-width: 620px; }
+
         nav {
-            background-color: white;
-            padding: 15px 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            background-color: rgba(255, 255, 255, 0.86);
+            backdrop-filter: blur(6px);
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(64, 98, 128, 0.2);
+        }
+        .nav-links {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
         }
         nav a {
-            color: #333;
+            color: var(--navy);
             text-decoration: none;
-            padding: 10px 20px;
-            display: inline-block;
-            transition: color 0.3s;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(64, 98, 128, 0.08);
+            border: 1px solid rgba(64, 98, 128, 0.2);
+            font-weight: 600;
+            transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
         }
-        nav a:hover { color: #667eea; }
-        main { padding: 40px 0; }
+        nav a:hover {
+            background: rgba(40, 144, 198, 0.18);
+            color: var(--ink);
+            transform: translateY(-1px);
+        }
+
+        main { padding: 48px 0 60px; }
+
         footer {
-            background-color: #333;
-            color: white;
+            background-color: var(--ink);
+            color: #fdf3ee;
             text-align: center;
-            padding: 20px 0;
-            margin-top: 50px;
+            padding: 22px 0;
+            margin-top: 30px;
         }
-        footer a { color: #667eea; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 1px solid transparent;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(120deg, var(--accent), var(--navy));
+            color: white;
+            box-shadow: 0 8px 18px rgba(40, 144, 198, 0.25);
+        }
+        .btn-outline {
+            color: var(--navy);
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(64, 98, 128, 0.35);
+        }
+        .btn-muted {
+            background: rgba(95, 102, 147, 0.12);
+            color: var(--ink);
+            border-color: rgba(95, 102, 147, 0.35);
+        }
+        .btn:hover { transform: translateY(-1px); }
+
+        .panel {
+            background: var(--panel);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(56, 40, 51, 0.08);
+        }
+
+        @media (max-width: 700px) {
+            header { padding: 30px 0 34px; }
+            nav a { width: 100%; justify-content: center; }
+            .nav-links { width: 100%; }
+        }
     </style>
 </head>
 <body>
