@@ -1,16 +1,1 @@
-<div class="page-header">
-    <div>
-        <h2 class="page-title">Creer un tag</h2>
-        <p class="page-meta">Ajoutez un nouveau tag a associer aux articles.</p>
-    </div>
-</div>
-
-<form method="post" action="/admin/tags" class="card form-card">
-    <div class="form-field">
-        <label for="name">Nom du tag</label>
-        <input id="name" type="text" name="name" required class="form-input">
-    </div>
-
-    <button type="submit" class="btn btn-primary">Enregistrer</button>
-    <a href="/admin/tags" class="btn btn-ghost">Annuler</a>
-</form>
+<div class="page-header"><div><h2 class="page-title">Creer un tag</h2><p class="page-meta">Ajoutez un nouveau tag a associer aux articles.</p></div></div><form action="/admin/tags"class="card form-card"method="post"><div class="form-field"><label for="name">Nom du tag</label> <input class="form-input"id="name"name="name"required></div><button class="btn btn-primary"type="submit">Enregistrer</button> <a class="btn btn-ghost"href="/admin/tags">Annuler</a></form>
