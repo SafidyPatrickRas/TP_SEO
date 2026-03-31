@@ -32,8 +32,8 @@ class Router {
     }
 
     private function convertPathToRegex($path) {
-        // Convertir /article/:id en regex /article/([a-zA-Z0-9_-]+)
-        $path = preg_replace('/:([a-zA-Z_][a-zA-Z0-9_]*)/', '(?P<$1>[a-zA-Z0-9_-]+)', $path);
+        // Convert /article/:slug to a pattern that accepts any non-slash characters.
+        $path = preg_replace('/:([a-zA-Z_][a-zA-Z0-9_]*)/', '(?P<$1>[^/]+)', $path);
         return '^' . $path . '$';
     }
 

@@ -220,6 +220,30 @@ $router->get('/admin/articles/:id/edit', function($id) {
     ], 'admin');
 });
 
+// Mise a jour d'un article
+$router->post('/admin/articles/:id', function($id) {
+    $db = $GLOBALS['db'];
+    $post = $db->fetchOne("SELECT id FROM posts WHERE id = ?", [$id]);
+    if (!$post) {
+        throw new Exception("Article non trouvé");
+    }
+
+    $title = trim($_POST['title'] ?? '');
+    $content = $_POST['content'] ?? '';
+    $status = $_POST['status'] ?? 'draft';
+    $slug = str_replace(' ', '-', strtolower($title));
+
+    $db->query(
+        "UPDATE posts
+         SET title = ?, slug = ?, content = ?, status = ?, updated_at = CURRENT_TIMESTAMP
+         WHERE id = ?",
+        [$title, $slug, $content, $status, $id]
+    );
+
+    header("Location: /admin/articles");
+    exit;
+});
+
 // ============ CRUD CATEGORIES (ADMIN) ============
 
 // Liste des catégories
